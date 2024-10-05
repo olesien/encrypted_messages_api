@@ -1,16 +1,27 @@
 package edu.linus.api.models;
 
 public class UserWithJWT {
+
+    Integer id;
     String name;
 
     String email;
 
     String token;
 
-    public UserWithJWT(String name, String email, String token) {
+    public UserWithJWT(Integer id, String name, String email, String token) {
+        this.id = id;
         this.name = name;
         this.email = email;
         this.token = token;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getName() {

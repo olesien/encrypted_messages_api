@@ -4,12 +4,14 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.auth0.jwt.interfaces.DecodedJWT;
 import org.springframework.core.env.Environment;
 
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.util.Date;
 
 public class Auth {
 
@@ -36,6 +38,7 @@ public class Auth {
         Algorithm algorithm = Algorithm.HMAC256(secret);
         String token = JWT.create()
                 .withIssuer("auth0")
+                .withExpiresAt(new Date(new Date().getTime() + 60*100*60))
                 .sign(algorithm);
 
         return token;
@@ -52,8 +55,8 @@ public class Auth {
                     // reusable verifier instance
                     .build();
 
-            verifier.verify(token);
-            return true;
+            DecodedJWT jwt = verifier.verify(token);
+            return !new Date().after(jwt.getExpiresAt()); //Token has expired
         } catch (JWTVerificationException exception){
             // Invalid signature/claims
             return false;
