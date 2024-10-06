@@ -15,6 +15,8 @@ public class EncryptedMessages {
     @JoinColumn(name = "userid")
     private Users user;
 
+    private String title;
+
     private String message;
 
     private Date created_at;
@@ -33,6 +35,14 @@ public class EncryptedMessages {
 
     public void setUser(Users user) {
         this.user = user;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getMessage() {
