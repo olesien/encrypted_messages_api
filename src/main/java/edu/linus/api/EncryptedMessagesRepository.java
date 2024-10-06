@@ -12,5 +12,7 @@ import java.util.Optional;
 
 public interface EncryptedMessagesRepository extends CrudRepository<EncryptedMessages, Integer> {
 
-    ArrayList<EncryptedMessages> findAllByUser(Users user);
+    ArrayList<EncryptedMessages> findAllByUserOrderByIdAsc(Users user);
+
+    Optional<EncryptedMessages> findByIdAndUser(int messageId, Users validUser);
 }

@@ -1,0 +1,8 @@
+spring.application.name=api
+spring.datasource.url=jdbc:postgresql://localhost:5432/usersecrets
+spring.datasource.username=postgres
+spring.datasource.password=postgres
+spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
+salt=
+encryptionsecret=
+jwtsecret=

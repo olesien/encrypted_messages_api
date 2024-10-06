@@ -19,6 +19,7 @@ public class EncryptedMessages {
 
     private String message;
 
+    @Column(nullable = false, updatable = false, insertable = false)
     private Date created_at;
 
     public Integer getId() {
