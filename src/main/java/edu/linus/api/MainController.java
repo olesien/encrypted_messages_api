@@ -130,7 +130,7 @@ public class MainController {
                 encryptedMessage.setTitle(encrypt(encryptedMessageForm.getTitle(), salt, encryptionSecret));
                 encryptedMessage.setMessage(encrypt(encryptedMessageForm.getMessage(), salt, encryptionSecret));
                 encryptedMessage.setUser(validUser);
-                return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse<>("Success!", encryptedMessagesRepository.save(encryptedMessage)));
+                return ResponseEntity.status(HttpStatus.CREATED).body(new ApiResponse<>("Success!", encryptedMessagesRepository.save(encryptedMessage)));
             } else {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse<>("User Not Found", null));
             }
@@ -172,6 +172,24 @@ public class MainController {
                 } else {
                     return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse<>("Message Not Found", null));
                 }
+
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse<>("User Not Found", null));
+            }
+        }
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ApiResponse<>("Invalid Token", null));
+    }
+
+    @DeleteMapping("/deleteaccount")
+    public @ResponseBody ResponseEntity<ApiResponse<Object>> deleteUser(HttpServletRequest request) {
+        DecodedJWT validToken = Auth.extractTokenFromCookie(request.getCookies(), env);
+        if (validToken != null) {
+            Optional<Users> user = userRepository.findById(Integer.valueOf(validToken.getSubject()));
+            if (user.isPresent()) {
+                Users validUser = user.get();
+                encryptedMessagesRepository.deleteAllByUserId(validUser.getId());
+                userRepository.delete(validUser);
+                return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse<>("Success!", null));
 
             } else {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse<>("User Not Found", null));

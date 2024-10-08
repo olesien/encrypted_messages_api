@@ -117,7 +117,7 @@ public class Auth {
         String token = JWT.create()
                 .withIssuer("auth0")
                 .withSubject(userId)
-                .withExpiresAt(new Date(new Date().getTime() + 31L *24*60*60*1000))
+                .withExpiresAt(new Date(new Date().getTime() + 24L*60*60*1000)) //24L*60*60*1000 = 1 day
                 .sign(algorithm);
 
         return token;
