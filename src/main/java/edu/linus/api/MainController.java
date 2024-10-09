@@ -104,6 +104,7 @@ public class MainController {
                 return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse<>("Success!", encryptedMessagesRepository.findAllByUserOrderByIdAsc(validUser).stream().map(message -> {
                     message.setTitle(decrypt(message.getTitle(), salt, encryptionSecret));
                     message.setMessage(decrypt(message.getMessage(), salt, encryptionSecret));
+                    message.setUser(null); //Prevent leak of encrypted password
                     return message;
                 }).toList()));
             } else {
